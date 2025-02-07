@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Website</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Helvetica, Arial, sans-serif;
+        }
+
+        #home-page {
+            background-image: url('pics/first-img.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            min-height: 100vh;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            text-align: center;
+            padding: 2rem;
+            box-sizing: border-box;
+        }
+
+        #home-page .container {
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        h1 {
+            color: #00ff00;
+            text-shadow: 0 0 10px #00ff00;
+            font-weight: bold;
+            font-style: italic;
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            max-width: min(800px, 90%);
+            margin: 20px auto;
+            line-height: 1.4;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: clamp(8px, 2vw, 10px) clamp(16px, 4vw, 20px);
+            cursor: pointer;
+            background-color: transparent;
+            border: 2px solid #00ff00;
+            color: #00ff00;
+            border-radius: 5px;
+            font-family: Helvetica, Arial, sans-serif;
+            font-weight: bold;
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            text-transform: uppercase;
+            text-shadow: 0 0 5px #00ff00;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #00ff00;
+            color: black;
+            box-shadow: 0 0 15px #00ff00;
+        }
+
+        #next-page {
+            background-color: black;
+            min-height: 100vh;
+            width: 100%;
+        }
+
+        .game-image {
+            width: auto;
+            height: auto;
+            max-width: min(90%, 1200px);
+            max-height: 60vh;
+            object-fit: contain;
+            margin-top: clamp(20px, 4vh, 40px);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-height: 800px) {
+            h1 {
+                font-size: clamp(1.2rem, 3vw, 2rem);
+                margin: 15px auto;
+            }
+            
+            .game-image {
+                max-height: 50vh;
+            }
+        }
+
+        #third-page {
+            background-image: url('pics/glasses-img.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            min-height: 100vh;
+            width: 100%;
+        }
+
+        #third-page .container {
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 2rem;
+            min-height: 100vh;
+        }
+
+        #third-page h1 {
+            color: #00ff00;
+            text-shadow: 0 0 10px #00ff00;
+        }
+
+        /* Add some spacing between image and button */
+        #next-page .button-container {
+            margin-top: 20px;
+        }
+
+        #next-page .container {
+            background-color: rgba(0, 0, 0, 0.9);
+        }
+
+        /* Sudoku styles with Matrix theme */
+        .sudoku-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 30px 0;
+        }
+
+        .sudoku-grid {
+            display: grid;
+            grid-template-columns: repeat(9, 40px);
+            grid-template-rows: repeat(9, 40px);
+            gap: 2px;
+            background-color: rgba(0, 255, 0, 0.1);
+            padding: 10px;
+            border: 2px solid #00ff00;
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.3);
+        }
+
+        .sudoku-cell {
+            width: 40px;
+            height: 40px;
+            text-align: center;
+            font-size: 18px;
+            border: 1px solid #00ff00;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #00ff00;
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+        .given {
+            background-color: rgba(0, 255, 0, 0.2);
+            font-weight: bold;
+            text-shadow: 0 0 5px #00ff00;
+        }
+
+        .sudoku-cell[contenteditable="true"]:focus {
+            outline: none;
+            background-color: rgba(0, 255, 0, 0.1);
+            box-shadow: 0 0 5px #00ff00;
+        }
+
+        /* Style the check solution button to match other buttons */
+        .check-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            cursor: pointer;
+            background-color: transparent;
+            border: 2px solid #00ff00;
+            color: #00ff00;
+            border-radius: 5px;
+            font-family: Helvetica, Arial, sans-serif;
+            font-weight: bold;
+            font-size: 1rem;
+            text-transform: uppercase;
+            text-shadow: 0 0 5px #00ff00;
+            transition: all 0.3s ease;
+        }
+
+        .check-button:hover {
+            background-color: #00ff00;
+            color: black;
+            box-shadow: 0 0 15px #00ff00;
+        }
+
+        #fourth-page {
+            background-color: black;
+            min-height: 100vh;
+            width: 100%;
+        }
+
+        #fourth-page .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            text-align: center;
+            padding: 2rem;
+            box-sizing: border-box;
+        }
+
+        #fourth-page h1 {
+            color: #00ff00;
+            text-shadow: 0 0 10px #00ff00;
+            font-weight: bold;
+            font-style: italic;
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            max-width: min(800px, 90%);
+            margin: 20px auto;
+            line-height: 1.4;
+        }
+
+        /* Update button styling to always be visible and clickable */
+        .next-button {
+            margin-top: 30px;
+            padding: 10px 20px;
+            cursor: pointer;
+            background-color: transparent;
+            border: 2px solid #00ff00;
+            color: #00ff00;
+            border-radius: 5px;
+            font-family: Helvetica, Arial, sans-serif;
+            font-weight: bold;
+            font-size: 1.2em;
+            text-transform: uppercase;
+            text-shadow: 0 0 5px #00ff00;
+            transition: all 0.3s ease;
+        }
+
+        .next-button:hover {
+            background-color: #00ff00;
+            color: black;
+            box-shadow: 0 0 15px #00ff00;
+        }
+
+        .highlighted {
+            background-color: rgba(255, 0, 0, 0.3) !important;
+            border: 1px solid #ff0000 !important;
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+        }
+
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.9);
+            padding: 20px;
+            border: 2px solid #00ff00;
+            box-shadow: 0 0 20px #00ff00;
+            color: #00ff00;
+            font-family: Helvetica, Arial, sans-serif;
+            font-weight: bold;
+            font-size: 1.5em;
+            z-index: 1000;
+            text-align: center;
+            animation: glow 2s infinite alternate;
+        }
+
+        @keyframes glow {
+            from {
+                box-shadow: 0 0 10px #00ff00;
+            }
+            to {
+                box-shadow: 0 0 20px #00ff00;
+            }
+        }
+
+        .puzzle-container {
+            margin: 30px auto;
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        /* Make sure the puzzle is responsive */
+        @media (max-width: 1024px) {
+            .puzzle-container {
+                max-width: 90%;
+            }
+            
+            .pm-embed-div {
+                width: 100% !important;
+            }
+        }
+
+        /* Override any puzzle iframe styles to match theme */
+        .pm-embed-div {
+            background-color: transparent !important;
+        }
+
+        /* Hide attribution if desired */
+        .pm-attribution-div {
+            display: none;
+        }
+
+        #fifth-page {
+            background-image: url('pics/katastrophe.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            min-height: 100vh;
+            width: 100%;
+        }
+
+        #fifth-page .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            text-align: center;
+            padding: 2rem;
+            box-sizing: border-box;
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+        #fifth-page h1 {
+            color: #00ff00;
+            text-shadow: 0 0 10px #00ff00;
+            font-weight: bold;
+            font-style: italic;
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            max-width: min(800px, 90%);
+            margin: 20px auto;
+            line-height: 1.4;
+        }
+
+        .next-button {
+            margin-top: 30px;
+            padding: clamp(8px, 2vw, 10px) clamp(16px, 4vw, 20px);
+            cursor: pointer;
+            background-color: transparent;
+            border: 2px solid #00ff00;
+            color: #00ff00;
+            border-radius: 5px;
+            font-family: Helvetica, Arial, sans-serif;
+            font-weight: bold;
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            text-transform: uppercase;
+            text-shadow: 0 0 5px #00ff00;
+            transition: all 0.3s ease;
+        }
+
+        .next-button:hover {
+            background-color: #00ff00;
+            color: black;
+            box-shadow: 0 0 15px #00ff00;
+        }
+    </style>
+    <!-- Add the required scripts for the Sudoku -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <script id="pm-script" src="https://puzzleme.amuselabs.com/pmm/js/puzzleme-embed.js"></script>
+    <script>
+        PM_Config.PM_BasePath = "https://puzzleme.amuselabs.com/pmm/";
+    </script>
+</head>
+<body>
+    <div id="home-page">
+        <div class="container">
+            <h1>I date Henry! He is very cute! But what else can he do?</h1>
+            <button onclick="showNextPage()">Click here to find out</button>
+        </div>
+    </div>
+
+    <div id="next-page" class="hidden">
+        <div class="container">
+            <h1>Uh oh, Donna went frantic and got lost at an otter rave. Can you find her? It's important, she has information concerning the date on which your birthday surprise will take place!</h1>
+            <img src="pics/wheres-donna.png" alt="Find Donna" class="game-image">
+            <div class="button-container">
+                <button onclick="showThirdPage()">Click here to find out the time of our meeting</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="third-page" class="hidden">
+        <div class="container">
+            <h1>Yey, the side bitch found the main bitch at the rave and you now have the date of the meeting. But what time should you be there? Can this luhch who loves numbers figure it out? </h1>
+            
+            <div class="sudoku-container">
+                <div class="sudoku-grid" id="sudoku-grid">
+                    <!-- Sudoku cells will be generated here -->
+                </div>
+                
+                <button class="next-button" onclick="showFourthPage()">
+                    Find out where we're meeting
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="fourth-page" class="hidden">
+        <div class="container">
+            <h1>Henry is very cute, he can find Donna and he's good with numbers. But how good is he with words? Take the crossword to prove your skills! One of the answers will give you the meeting location, which one is it?</h1>
+            
+            <div class="puzzle-container">
+                <!-- Embedded Crossword -->
+                <div style="position: relative; text-align: center;">
+                    <div class="pm-embed-div" 
+                         data-id="3558c52e" 
+                         data-set="78f88124f43d34e565419ff27bd9389a10e40b6d7334d227aede0c2ea787902a" 
+                         data-puzzleType="crossword" 
+                         data-height="800px"
+                         data-width="1000px"
+                         data-mobileMargin="10px">
+                    </div>
+                </div>
+            </div>
+
+            <button onclick="showFifthPage()" class="next-button">
+                Last but not least, click here...
+            </button>
+        </div>
+    </div>
+
+    <div id="fifth-page" class="hidden">
+        <div class="container">
+            <h1>Yey you did it! Meet me on 16 March at 2:45pm in front of Sisyphos to collect your surprise. Please check under your pillow for what to bring. Happy birthday bub <3</h1>
+        </div>
+    </div>
+
+    <!-- Add popup div -->
+    <div id="timePopup" class="popup">
+        Meet me at 2:45pm
+    </div>
+
+    <script>
+        function showNextPage() {
+            document.getElementById('home-page').classList.add('hidden');
+            document.getElementById('next-page').classList.remove('hidden');
+        }
+
+        function showThirdPage() {
+            document.getElementById('next-page').classList.add('hidden');
+            document.getElementById('third-page').classList.remove('hidden');
+        }
+
+        function showFourthPage() {
+            // Hide the popup
+            const popup = document.getElementById('timePopup');
+            popup.style.display = 'none';
+            
+            // Switch pages
+            document.getElementById('third-page').classList.add('hidden');
+            document.getElementById('fourth-page').classList.remove('hidden');
+        }
+
+        function showFifthPage() {
+            document.getElementById('fourth-page').classList.add('hidden');
+            document.getElementById('fifth-page').classList.remove('hidden');
+        }
+
+        // Sudoku puzzle
+        const puzzle = [
+            [5, 3, 0, 0, 7, 0, 0, 0, 0],
+            [6, 0, 0, 1, 9, 5, 0, 0, 0],
+            [0, 9, 8, 0, 0, 0, 0, 6, 0],
+            [8, 0, 0, 0, 6, 0, 0, 0, 3],
+            [4, 0, 0, 8, 0, 3, 0, 0, 1],
+            [7, 0, 0, 0, 2, 0, 0, 0, 6],
+            [0, 6, 0, 0, 0, 0, 2, 8, 0],
+            [0, 0, 0, 4, 1, 9, 0, 0, 5],
+            [0, 0, 0, 0, 8, 0, 0, 7, 9]
+        ];
+
+        function checkSudoku() {
+            const solution = [
+                [5,3,4,6,7,8,9,1,2],
+                [6,7,2,1,9,5,3,4,8],
+                [1,9,8,3,4,2,5,6,7],
+                [8,5,9,7,6,1,4,2,3],
+                [4,2,6,8,5,3,7,9,1],
+                [7,1,3,9,2,4,8,5,6],
+                [9,6,1,5,3,7,2,8,4],
+                [2,8,7,4,1,9,6,3,5],
+                [3,4,5,2,8,6,1,7,9]
+            ];
+
+            const grid = document.getElementById('sudoku-grid');
+            const cells = grid.getElementsByClassName('sudoku-cell');
+            let isComplete = true;
+
+            // Check if the puzzle is complete and correct
+            for (let i = 0; i < 9; i++) {
+                for (let j = 0; j < 9; j++) {
+                    const cellValue = parseInt(cells[i * 9 + j].textContent) || 0;
+                    if (cellValue !== solution[i][j]) {
+                        isComplete = false;
+                        break;
+                    }
+                }
+            }
+
+            if (isComplete) {
+                // Highlight cells with 2, 4, 5 in row 6 (index 5)
+                const row6 = solution[5];
+                const timeNumbers = [2, 4, 5];
+                
+                for (let j = 0; j < 9; j++) {
+                    if (timeNumbers.includes(row6[j])) {
+                        cells[5 * 9 + j].classList.add('highlighted');
+                    }
+                }
+
+                // Show popup permanently
+                const popup = document.getElementById('timePopup');
+                popup.style.display = 'block';
+            }
+        }
+
+        function renderSudoku(grid) {
+            const sudokuGrid = document.getElementById('sudoku-grid');
+            sudokuGrid.innerHTML = '';
+
+            for (let i = 0; i < 9; i++) {
+                for (let j = 0; j < 9; j++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'sudoku-cell';
+                    if (grid[i][j] !== 0) {
+                        cell.textContent = grid[i][j];
+                        cell.classList.add('given');
+                    } else {
+                        cell.contentEditable = true;
+                        // Add input event listener to check puzzle on every change
+                        cell.addEventListener('input', checkSudoku);
+                    }
+                    sudokuGrid.appendChild(cell);
+                }
+            }
+        }
+
+        // Initialize Sudoku when the page loads
+        window.addEventListener('load', () => renderSudoku(puzzle));
+    </script>
+</body>
+</html>
